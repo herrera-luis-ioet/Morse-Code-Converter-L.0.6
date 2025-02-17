@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import InputSection from './InputSection';
 import OutputSection from './OutputSection';
 import ControlsSection from './ControlsSection';
+import { useMorseCodeConverter } from '../hooks/useMorseCodeConverter';
 
 const Container = styled.div`
   width: 100%;
@@ -12,11 +13,28 @@ const Container = styled.div`
 `;
 
 const MorseCodeConverter: React.FC = () => {
+  const {
+    input,
+    output,
+    error,
+    mode,
+    setInput,
+    toggleMode,
+    clearInput
+  } = useMorseCodeConverter();
+
   return (
     <Container>
-      <InputSection />
+      <InputSection
+        value={input}
+        onChange={setInput}
+        error={error}
+        mode={mode}
+        onModeToggle={toggleMode}
+        onClear={clearInput}
+      />
       <ControlsSection />
-      <OutputSection />
+      <OutputSection value={output} />
     </Container>
   );
 };
