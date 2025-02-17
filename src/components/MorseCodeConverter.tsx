@@ -24,17 +24,21 @@ const MorseCodeConverter: React.FC = () => {
   } = useMorseCodeConverter();
 
   return (
-    <Container>
-      <InputSection
-        value={input}
-        onChange={setInput}
-        error={error}
-        mode={mode}
-        onModeToggle={toggleMode}
-        onClear={clearInput}
-      />
+    <Container data-testid="morse-converter-container">
+      <div data-testid="morse-input-section">
+        <InputSection
+          value={input}
+          onChange={setInput}
+          error={error}
+          mode={mode}
+          onModeToggle={toggleMode}
+          onClear={clearInput}
+        />
+      </div>
       <ControlsSection />
-      <OutputSection value={output} />
+      <div data-testid="morse-output-section">
+        <OutputSection value={output} />
+      </div>
     </Container>
   );
 };
