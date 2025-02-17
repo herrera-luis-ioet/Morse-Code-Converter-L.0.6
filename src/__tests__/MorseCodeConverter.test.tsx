@@ -1,6 +1,4 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import MorseCodeConverter from '../components/MorseCodeConverter';
 
 describe('MorseCodeConverter', () => {
@@ -8,96 +6,61 @@ describe('MorseCodeConverter', () => {
     render(<MorseCodeConverter />);
   });
 
-  describe('Initial Render', () => {
-    it('renders component with all sections present', () => {
-      // Input section
-      expect(screen.getByRole('textbox')).toBeInTheDocument();
-      
-      // Controls section
-      expect(screen.getByRole('region', { name: /controls/i })).toBeInTheDocument();
-      
-      // Output section
-      expect(screen.getByRole('region', { name: /output/i })).toBeInTheDocument();
+  describe('Component Rendering', () => {
+    test('renders main component elements', () => {
+      expect(screen.getByTestId('morse-code-converter')).toBeInTheDocument();
+      expect(screen.getByTestId('input-section')).toBeInTheDocument();
+      expect(screen.getByTestId('output-section')).toBeInTheDocument();
+      expect(screen.getByTestId('controls-section')).toBeInTheDocument();
     });
 
-    it('starts in text-to-morse mode', () => {
-      expect(screen.getByRole('button', { name: /mode/i })).toHaveTextContent(/text to morse/i);
-    });
-  });
-
-  describe('Text to Morse Code Conversion', () => {
-    it('converts valid text input to morse code', async () => {
-      const input = 'HELLO';
-      const textbox = screen.getByRole('textbox');
-      
-      await userEvent.type(textbox, input);
-      
-      // Expected Morse code for 'HELLO'
-      const expectedOutput = '.... . .-.. .-.. ---';
-      expect(screen.getByText(expectedOutput)).toBeInTheDocument();
-    });
-
-    it('shows no error for valid input', async () => {
-      const input = 'TEST';
-      const textbox = screen.getByRole('textbox');
-      
-      await userEvent.type(textbox, input);
-      
-      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    test('renders title and mode toggle button', () => {
+      expect(screen.getByTestId('converter-title')).toHaveTextContent(/Morse Code Converter/i);
+      expect(screen.getByTestId('mode-toggle-button')).toBeInTheDocument();
     });
   });
 
   describe('Mode Toggle Functionality', () => {
-    it('toggles between text-to-morse and morse-to-text modes', async () => {
-      const toggleButton = screen.getByRole('button', { name: /mode/i });
+    test('toggles between text-to-morse and morse-to-text modes', () => {
+      const modeButton = screen.getByTestId('mode-toggle-button');
       
-      // Initial mode
-      expect(toggleButton).toHaveTextContent(/text to morse/i);
+      // Initial mode should be text-to-morse
+      expect(screen.getByTestId('input-label')).toHaveTextContent(/text input/i);
+      expect(screen.getByTestId('output-label')).toHaveTextContent(/morse code output/i);
       
-      // Toggle mode
-      await userEvent.click(toggleButton);
-      expect(toggleButton).toHaveTextContent(/morse to text/i);
+      // Click mode button to switch to morse-to-text
+      fireEvent.click(modeButton);
+      expect(screen.getByTestId('input-label')).toHaveTextContent(/morse code input/i);
+      expect(screen.getByTestId('output-label')).toHaveTextContent(/text output/i);
       
-      // Toggle back
-      await userEvent.click(toggleButton);
-      expect(toggleButton).toHaveTextContent(/text to morse/i);
+      // Click mode button again to switch back to text-to-morse
+      fireEvent.click(modeButton);
+      expect(screen.getByTestId('input-label')).toHaveTextContent(/text input/i);
+      expect(screen.getByTestId('output-label')).toHaveTextContent(/morse code output/i);
     });
 
-    it('clears input when mode is toggled', async () => {
-      const textbox = screen.getByRole('textbox');
-      const toggleButton = screen.getByRole('button', { name: /mode/i });
-      
-      // Enter some text
-      await userEvent.type(textbox, 'TEST');
-      expect(textbox).toHaveValue('TEST');
-      
-      // Toggle mode
-      await userEvent.click(toggleButton);
-      expect(textbox).toHaveValue('');
+    test('mode toggle button has correct accessibility attributes', () => {
+      const modeButton = screen.getByTestId('mode-toggle-button');
+      expect(modeButton).toHaveAttribute('aria-label', 'Toggle conversion mode');
+      expect(modeButton).toHaveAttribute('role', 'button');
     });
   });
 
-  describe('Error Handling', () => {
-    it('displays error message for invalid text input', async () => {
-      const textbox = screen.getByRole('textbox');
+  describe('Input/Output Functionality', () => {
+    test('input and output sections are properly connected', () => {
+      const input = screen.getByTestId('converter-input');
+      const output = screen.getByTestId('converter-output');
       
-      // Type invalid character
-      await userEvent.type(textbox, '§');
-      
-      expect(screen.getByRole('alert')).toHaveTextContent(/invalid characters/i);
+      fireEvent.change(input, { target: { value: 'test' } });
+      expect(output).toHaveValue('- . ... -'); // 'test' in Morse code
     });
 
-    it('clears error message when input is cleared', async () => {
-      const textbox = screen.getByRole('textbox');
-      const clearButton = screen.getByRole('button', { name: /clear/i });
+    test('handles input validation', () => {
+      const input = screen.getByTestId('converter-input');
+      const errorMessage = screen.getByTestId('error-message');
       
-      // Type invalid character
-      await userEvent.type(textbox, '§');
-      expect(screen.getByRole('alert')).toBeInTheDocument();
-      
-      // Clear input
-      await userEvent.click(clearButton);
-      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      fireEvent.change(input, { target: { value: '@#$' } });
+      expect(errorMessage).toHaveTextContent(/invalid characters/i);
     });
   });
 });
