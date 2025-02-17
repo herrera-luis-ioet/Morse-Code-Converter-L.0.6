@@ -1,41 +1,53 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Box, TextField, Typography } from '@mui/material';
 
-const Section = styled.div`
-  background: #ffffff;
-  border: 2px solid #000000;
-  border-radius: 30px;
-  padding: 20px;
-  margin: 20px 0;
-  height: 290px;
-  margin-top: 187px;
-`;
+interface InputSectionProps {
+  text: string;
+  onTextChange: (text: string) => void;
+}
 
-const Label = styled.div`
-  font-size: 32px;
-  color: #000000;
-  margin-bottom: 20px;
-`;
-
-const TextField = styled.input`
-  width: 100%;
-  font-size: 28px;
-  color: rgb(168, 168, 168);
-  border: none;
-  outline: none;
-  padding: 10px;
-  font-family: 'JetBrains Mono', monospace;
-`;
-
-const InputSection: React.FC = () => {
+const InputSection: React.FC<InputSectionProps> = ({ text, onTextChange }) => {
   return (
-    <Section>
-      <Label>Input:</Label>
-      <TextField 
-        type="text" 
+    <Box
+      sx={{
+        background: '#ffffff',
+        border: '2px solid #000000',
+        borderRadius: '30px',
+        padding: '20px',
+        margin: '20px 0',
+        height: '290px',
+        marginTop: '187px',
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          fontSize: '32px',
+          color: '#000000',
+          marginBottom: '20px',
+        }}
+      >
+        Input:
+      </Typography>
+      <TextField
+        fullWidth
+        value={text}
+        onChange={(e) => onTextChange(e.target.value)}
         placeholder="Type your message here"
+        data-testid="morse-code-input"
+        variant="standard"
+        InputProps={{
+          sx: {
+            fontSize: '28px',
+            color: 'rgb(168, 168, 168)',
+            fontFamily: '"JetBrains Mono", monospace',
+            '&::placeholder': {
+              color: 'rgb(168, 168, 168)',
+            },
+          },
+        }}
       />
-    </Section>
+    </Box>
   );
 };
 
