@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useAudioPlayer } from '../hooks/useAudioPlayer';
 
 const Section = styled.div`
   margin: 20px 0;
@@ -47,31 +48,116 @@ const SliderHandle = styled.div<{ left: number }>`
   cursor: pointer;
 `;
 
+const PlaybackControls = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  border: 2px solid #000;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #000;
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
 interface SliderProps {
   label: string;
   value: number;
-  percentage: number;
+  min: number;
+  max: number;
+  onChange: (value: number) => void;
 }
 
-const Slider: React.FC<SliderProps> = ({ label, value, percentage }) => (
-  <SliderContainer>
-    <SliderLabel>
-      <span>{label}</span>
-      <span>{value}</span>
-    </SliderLabel>
-    <SliderTrack>
-      <SliderFill width={percentage} />
-      <SliderHandle left={percentage} />
-    </SliderTrack>
-  </SliderContainer>
-);
+const Slider: React.FC<SliderProps> = ({ label, value, min, max, onChange }) => {
+  const percentage = ((value - min) / (max - min)) * 100;
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(Number(e.target.value));
+  };
 
-const ControlsSection: React.FC = () => {
+  return (
+    <SliderContainer>
+      <SliderLabel>
+        <span>{label}</span>
+        <span>{value}{label === 'pitch' ? 'Hz' : '%'}</span>
+      </SliderLabel>
+      <SliderTrack>
+        <SliderFill width={percentage} />
+        <input
+          type="range"
+          min={min}
+          max={max}
+          value={value}
+          onChange={handleChange}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            opacity: 0,
+            cursor: 'pointer',
+          }}
+        />
+        <SliderHandle left={percentage} />
+      </SliderTrack>
+    </SliderContainer>
+  );
+};
+
+interface ControlsSectionProps {
+  morseCode: string;
+}
+
+const ControlsSection: React.FC<ControlsSectionProps> = ({ morseCode }) => {
+  const { isPlaying, config, play, stop, updateConfig } = useAudioPlayer();
+
   return (
     <Section>
-      <Slider label="speed" value={20} percentage={32} />
-      <Slider label="pitch" value={550} percentage={53} />
-      <Slider label="volume" value={80} percentage={75} />
+      <Slider
+        label="speed"
+        value={config.speed}
+        min={50}
+        max={200}
+        onChange={(value) => updateConfig({ speed: value })}
+      />
+      <Slider
+        label="pitch"
+        value={config.pitch}
+        min={200}
+        max={1000}
+        onChange={(value) => updateConfig({ pitch: value })}
+      />
+      <Slider
+        label="volume"
+        value={config.volume}
+        min={0}
+        max={100}
+        onChange={(value) => updateConfig({ volume: value })}
+      />
+      <PlaybackControls>
+        <Button
+          onClick={() => play(morseCode)}
+          disabled={isPlaying || !morseCode}
+        >
+          {isPlaying ? 'Playing...' : 'Play'}
+        </Button>
+        <Button onClick={stop} disabled={!isPlaying}>
+          Stop
+        </Button>
+      </PlaybackControls>
     </Section>
   );
 };
