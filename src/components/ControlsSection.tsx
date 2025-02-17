@@ -1,164 +1,71 @@
 import React from 'react';
-import styled from 'styled-components';
-import { useAudioPlayer } from '../hooks/useAudioPlayer';
-
-const Section = styled.div`
-  margin: 20px 0;
-`;
-
-const SliderContainer = styled.div`
-  margin: 20px 0;
-`;
-
-const SliderLabel = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 28px;
-  color: #000000;
-  margin-bottom: 10px;
-  font-family: 'JetBrains Mono', monospace;
-`;
-
-const SliderTrack = styled.div`
-  position: relative;
-  width: 100%;
-  height: 11px;
-  background: rgb(240, 240, 240);
-  border-radius: 10px;
-`;
-
-const SliderFill = styled.div<{ width: number }>`
-  position: absolute;
-  height: 100%;
-  background: rgb(132, 132, 132);
-  border-radius: 10px;
-  width: ${props => props.width}%;
-`;
-
-const SliderHandle = styled.div<{ left: number }>`
-  position: absolute;
-  width: 42px;
-  height: 42px;
-  background: #ffffff;
-  border-radius: 50%;
-  top: 50%;
-  left: ${props => props.left}%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 2px 10px 3px rgba(217, 217, 217, 0.5);
-  cursor: pointer;
-`;
-
-const PlaybackControls = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 16px;
-  border: 2px solid #000;
-  background: #fff;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover:not(:disabled) {
-    background: #000;
-    color: #fff;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-interface SliderProps {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  onChange: (value: number) => void;
-}
-
-const Slider: React.FC<SliderProps> = ({ label, value, min, max, onChange }) => {
-  const percentage = ((value - min) / (max - min)) * 100;
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(Number(e.target.value));
-  };
-
-  return (
-    <SliderContainer>
-      <SliderLabel>
-        <span>{label}</span>
-        <span>{value}{label === 'pitch' ? 'Hz' : '%'}</span>
-      </SliderLabel>
-      <SliderTrack>
-        <SliderFill width={percentage} />
-        <input
-          type="range"
-          min={min}
-          max={max}
-          value={value}
-          onChange={handleChange}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            opacity: 0,
-            cursor: 'pointer',
-          }}
-        />
-        <SliderHandle left={percentage} />
-      </SliderTrack>
-    </SliderContainer>
-  );
-};
+import { Box, Slider, IconButton } from '@mui/material';
+import { PlayArrow, Stop, Settings } from '@mui/icons-material';
 
 interface ControlsSectionProps {
-  morseCode: string;
+  speed: number;
+  pitch: number;
+  volume: number;
+  onSpeedChange: (value: number) => void;
+  onPitchChange: (value: number) => void;
+  onVolumeChange: (value: number) => void;
+  onPlay: () => void;
+  onStop: () => void;
+  onSettingsClick: () => void;
 }
 
-const ControlsSection: React.FC<ControlsSectionProps> = ({ morseCode }) => {
-  const { isPlaying, config, play, stop, updateConfig } = useAudioPlayer();
-
+const ControlsSection: React.FC<ControlsSectionProps> = ({
+  speed,
+  pitch,
+  volume,
+  onSpeedChange,
+  onPitchChange,
+  onVolumeChange,
+  onPlay,
+  onStop,
+  onSettingsClick,
+}) => {
   return (
-    <Section>
+    <Box sx={{ width: '100%', p: 2 }} data-testid="controls-section-container">
       <Slider
-        label="speed"
-        value={config.speed}
-        min={50}
-        max={200}
-        onChange={(value) => updateConfig({ speed: value })}
+        data-testid="speed-slider"
+        value={speed}
+        onChange={(_, value) => onSpeedChange(value as number)}
+        min={10}
+        max={100}
+        valueLabelDisplay="auto"
+        sx={{ mb: 2 }}
       />
       <Slider
-        label="pitch"
-        value={config.pitch}
+        data-testid="pitch-slider"
+        value={pitch}
+        onChange={(_, value) => onPitchChange(value as number)}
         min={200}
-        max={1000}
-        onChange={(value) => updateConfig({ pitch: value })}
+        max={2000}
+        valueLabelDisplay="auto"
+        sx={{ mb: 2 }}
       />
       <Slider
-        label="volume"
-        value={config.volume}
+        data-testid="volume-slider"
+        value={volume}
+        onChange={(_, value) => onVolumeChange(value as number)}
         min={0}
         max={100}
-        onChange={(value) => updateConfig({ volume: value })}
+        valueLabelDisplay="auto"
+        sx={{ mb: 2 }}
       />
-      <PlaybackControls>
-        <Button
-          onClick={() => play(morseCode)}
-          disabled={isPlaying || !morseCode}
-        >
-          {isPlaying ? 'Playing...' : 'Play'}
-        </Button>
-        <Button onClick={stop} disabled={!isPlaying}>
-          Stop
-        </Button>
-      </PlaybackControls>
-    </Section>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+        <IconButton onClick={onPlay} data-testid="play-button">
+          <PlayArrow />
+        </IconButton>
+        <IconButton onClick={onStop} data-testid="stop-button">
+          <Stop />
+        </IconButton>
+        <IconButton onClick={onSettingsClick} data-testid="settings-button">
+          <Settings />
+        </IconButton>
+      </Box>
+    </Box>
   );
 };
 
