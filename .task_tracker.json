@@ -139,7 +139,7 @@
           "description": "Implement UI component tests",
           "status": "in-progress",
           "micro_agent": "TestCodeWritingAgent",
-          "details": "Create tests for MorseCodeConverter, InputSection, OutputSection, and ControlsSection components. Test cases: CI-001, CI-002, CI-003"
+          "details": "Currently implementing InputSection component tests after completing MorseCodeConverter tests"
         },
         "Task5SubTask2": {
           "description": "Implement conversion utility tests",
