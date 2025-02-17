@@ -1,123 +1,119 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Box, Typography, TextField, IconButton, Stack } from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import StopIcon from '@mui/icons-material/Stop';
+import SettingsIcon from '@mui/icons-material/Settings';
 
-const Section = styled.div`
-  background: #ffffff;
-  border: 2px solid #000000;
-  border-radius: 30px;
-  padding: 20px;
-  margin: 20px 0;
-  height: 464px;
-  margin-top: 60px;
-`;
+interface OutputSectionProps {
+  morseCode?: string;
+}
 
-const Label = styled.div`
-  font-size: 32px;
-  color: #000000;
-  margin-bottom: 20px;
-`;
-
-const TextField = styled.input`
-  width: 100%;
-  font-size: 28px;
-  color: rgb(168, 168, 168);
-  border: none;
-  outline: none;
-  padding: 10px;
-  font-family: 'JetBrains Mono', monospace;
-`;
-
-const ControlButtons = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 20px;
-`;
-
-const ControlButton = styled.button`
-  width: 120px;
-  height: 114px;
-  background: #000000;
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  position: relative;
-`;
-
-const PlayButton = styled(ControlButton)`
-  &::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 55%;
-    transform: translate(-50%, -50%);
-    border-left: 25px solid #ffffff;
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-  }
-`;
-
-const PauseButton = styled(ControlButton)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 7px;
-
-  span {
-    width: 14px;
-    height: 51px;
-    background: #ffffff;
-    border-radius: 3px;
-  }
-`;
-
-const StopButton = styled(ControlButton)`
-  &::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    background: #ffffff;
-    border-radius: 3px;
-  }
-`;
-
-const SettingsButton = styled(ControlButton)`
-  &::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 35px;
-    height: 51px;
-    background: #ffffff;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  }
-`;
-
-const OutputSection: React.FC = () => {
+const OutputSection: React.FC<OutputSectionProps> = ({ morseCode = '' }) => {
   return (
-    <Section>
-      <Label>Output:</Label>
-      <TextField 
-        type="text" 
-        placeholder="Translated message" 
-        readOnly 
+    <Box
+      sx={{
+        background: '#ffffff',
+        border: '2px solid #000000',
+        borderRadius: '30px',
+        padding: '20px',
+        margin: '20px 0',
+        height: '464px',
+        marginTop: '60px',
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          fontSize: '32px',
+          color: '#000000',
+          marginBottom: '20px',
+        }}
+      >
+        Output:
+      </Typography>
+      <TextField
+        fullWidth
+        placeholder="Translated message"
+        value={morseCode}
+        InputProps={{
+          readOnly: true,
+          sx: {
+            fontSize: '28px',
+            color: 'rgb(168, 168, 168)',
+            fontFamily: "'JetBrains Mono', monospace",
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: 'none',
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              border: 'none',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              border: 'none',
+            },
+          },
+        }}
       />
-      <ControlButtons>
-        <PlayButton />
-        <PauseButton>
-          <span />
-          <span />
-        </PauseButton>
-        <StopButton />
-        <SettingsButton />
-      </ControlButtons>
-    </Section>
+      <Stack
+        direction="row"
+        spacing={5}
+        justifyContent="center"
+        sx={{ marginTop: '20px' }}
+      >
+        <IconButton
+          sx={{
+            width: '120px',
+            height: '114px',
+            background: '#000000',
+            borderRadius: '30px',
+            '&:hover': {
+              background: '#000000',
+            },
+          }}
+        >
+          <PlayArrowIcon sx={{ color: '#ffffff', fontSize: '50px' }} />
+        </IconButton>
+        <IconButton
+          sx={{
+            width: '120px',
+            height: '114px',
+            background: '#000000',
+            borderRadius: '30px',
+            '&:hover': {
+              background: '#000000',
+            },
+          }}
+        >
+          <PauseIcon sx={{ color: '#ffffff', fontSize: '50px' }} />
+        </IconButton>
+        <IconButton
+          sx={{
+            width: '120px',
+            height: '114px',
+            background: '#000000',
+            borderRadius: '30px',
+            '&:hover': {
+              background: '#000000',
+            },
+          }}
+        >
+          <StopIcon sx={{ color: '#ffffff', fontSize: '50px' }} />
+        </IconButton>
+        <IconButton
+          sx={{
+            width: '120px',
+            height: '114px',
+            background: '#000000',
+            borderRadius: '30px',
+            '&:hover': {
+              background: '#000000',
+            },
+          }}
+        >
+          <SettingsIcon sx={{ color: '#ffffff', fontSize: '50px' }} />
+        </IconButton>
+      </Stack>
+    </Box>
   );
 };
 
