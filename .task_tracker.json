@@ -166,7 +166,39 @@
           "details": "Run all tests and verify coverage. Address any failures or coverage gaps."
         }
       }
+    },
+    "Task6": {
+      "description": "Implement Additional Test Coverage and Error States",
+      "task_description": "Add missing test coverage and implement error states for components",
+      "status": "to-do",
+      "details": "Improve test coverage for App.tsx and index.tsx, implement error states, and add comprehensive integration tests",
+      "subtasks": {
+        "Task6SubTask1": {
+          "description": "Create test file for App.tsx",
+          "status": "to-do",
+          "micro_agent": "TestCodeWritingAgent",
+          "details": "Implement basic render and functionality tests for the main App component"
+        },
+        "Task6SubTask2": {
+          "description": "Create test file for index.tsx",
+          "status": "to-do",
+          "micro_agent": "TestCodeWritingAgent",
+          "details": "Add tests for application entry point and React root rendering"
+        },
+        "Task6SubTask3": {
+          "description": "Implement error states in components",
+          "status": "to-do",
+          "micro_agent": "CodeWritingAgent",
+          "details": "Add proper error handling and UI states for InputSection and OutputSection components"
+        },
+        "Task6SubTask4": {
+          "description": "Add integration tests",
+          "status": "to-do",
+          "micro_agent": "TestCodeWritingAgent",
+          "details": "Create integration tests covering the complete conversion flow from input to output"
+        }
+      }
     }
   },
-  "next_task_id": 6
+  "next_task_id": 7
 }
