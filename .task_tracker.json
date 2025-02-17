@@ -4,7 +4,7 @@
     "Task1": {
       "description": "Project Setup and Base Structure",
       "task_description": "Initialize React project and set up development environment with necessary configurations",
-      "status": "completed",
+      "status": "in-progress",
       "details": "Set up React project using Create React App or similar tool. Include TypeScript configuration, testing setup, and necessary development dependencies. Configure build process and development environment.",
       "subtasks": {
         "Task1SubTask1": {
