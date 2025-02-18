@@ -6,10 +6,10 @@ import StopIcon from '@mui/icons-material/Stop';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 interface OutputSectionProps {
-  morseCode?: string;
+  value: string;
 }
 
-const OutputSection: React.FC<OutputSectionProps> = ({ morseCode = '' }) => {
+const OutputSection: React.FC<OutputSectionProps> = ({ value }) => {
   return (
     <Box
       sx={{
@@ -35,7 +35,7 @@ const OutputSection: React.FC<OutputSectionProps> = ({ morseCode = '' }) => {
       <TextField
         fullWidth
         placeholder="Translated message"
-        value={morseCode}
+        value={value}
         InputProps={{
           readOnly: true,
           sx: {

@@ -2,11 +2,22 @@ import React from 'react';
 import { Box, TextField, Typography } from '@mui/material';
 
 interface InputSectionProps {
-  text: string;
-  onTextChange: (text: string) => void;
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
+  mode: string;
+  onModeToggle: () => void;
+  onClear: () => void;
 }
 
-const InputSection: React.FC<InputSectionProps> = ({ text, onTextChange }) => {
+const InputSection: React.FC<InputSectionProps> = ({ 
+  value, 
+  onChange, 
+  error, 
+  mode, 
+  onModeToggle, 
+  onClear 
+}) => {
   return (
     <Box
       sx={{
@@ -31,8 +42,10 @@ const InputSection: React.FC<InputSectionProps> = ({ text, onTextChange }) => {
       </Typography>
       <TextField
         fullWidth
-        value={text}
-        onChange={(e) => onTextChange(e.target.value)}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        error={!!error}
+        helperText={error}
         placeholder="Type your message here"
         data-testid="morse-code-input"
         variant="standard"
