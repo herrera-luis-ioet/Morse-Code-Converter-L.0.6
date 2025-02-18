@@ -47,6 +47,27 @@ describe('MorseCodeConverter', () => {
         marginTop: '60px',
       });
     });
+
+    test('renders dividers with correct spacing', () => {
+      const dividers = screen.getAllByRole('separator');
+      expect(dividers).toHaveLength(2);
+      dividers.forEach(divider => {
+        expect(divider).toHaveStyle({
+          marginTop: '32px',
+          marginBottom: '32px'
+        });
+      });
+    });
+
+    test('maintains visual hierarchy', () => {
+      const container = screen.getByTestId('morse-converter-container');
+      const children = container.children;
+      
+      expect(children[0]).toHaveAttribute('data-testid', 'morse-input-section');
+      expect(children[1]).toHaveClass('MuiDivider-root');
+      expect(children[3]).toHaveClass('MuiDivider-root');
+      expect(children[4]).toHaveAttribute('data-testid', 'morse-output-section');
+    });
   });
 
   describe('Error Handling', () => {
