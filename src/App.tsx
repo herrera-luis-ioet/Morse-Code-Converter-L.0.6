@@ -1,16 +1,28 @@
 import React from 'react';
+import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import MorseCodeConverter from './components/MorseCodeConverter';
 import './App.css';
+
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+});
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Morse Code Converter</h1>
-      </header>
-      <main>
-        {/* Components will be added here */}
-      </main>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="md" sx={{ py: 4 }}>
+        <MorseCodeConverter />
+      </Container>
+    </ThemeProvider>
   );
 };
 
