@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Divider } from '@mui/material';
 import InputSection from './InputSection';
 import OutputSection from './OutputSection';
 import ControlsSection from './ControlsSection';
@@ -35,7 +36,9 @@ const MorseCodeConverter: React.FC = () => {
           onClear={clearInput}
         />
       </div>
+      <Divider sx={{ my: 3 }} />
       <ControlsSection />
+      <Divider sx={{ my: 3 }} />
       <div data-testid="morse-output-section">
         <OutputSection value={output} />
       </div>

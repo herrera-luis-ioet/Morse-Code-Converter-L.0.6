@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography, Alert } from '@mui/material';
+import ErrorIcon from '@mui/icons-material/Error';
 
 interface InputSectionProps {
   value: string;
@@ -45,7 +46,6 @@ const InputSection: React.FC<InputSectionProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         error={!!error}
-        helperText={error}
         placeholder="Type your message here"
         data-testid="morse-code-input"
         variant="standard"
@@ -60,6 +60,22 @@ const InputSection: React.FC<InputSectionProps> = ({
           },
         }}
       />
+      {error && (
+        <Alert
+          severity="error"
+          icon={<ErrorIcon />}
+          sx={{
+            mt: 2,
+            backgroundColor: 'transparent',
+            color: 'error.main',
+            '& .MuiAlert-icon': {
+              color: 'error.main',
+            },
+          }}
+        >
+          {error}
+        </Alert>
+      )}
     </Box>
   );
 };
