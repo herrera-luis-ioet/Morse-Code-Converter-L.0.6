@@ -36,9 +36,9 @@ const MorseCodeConverter: React.FC = () => {
           onClear={clearInput}
         />
       </div>
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={{ my: 4 }} />
       <ControlsSection />
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={{ my: 4 }} />
       <div data-testid="morse-output-section">
         <OutputSection value={output} />
       </div>

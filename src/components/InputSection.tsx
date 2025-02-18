@@ -68,6 +68,7 @@ const InputSection: React.FC<InputSectionProps> = ({
             mt: 2,
             backgroundColor: 'transparent',
             color: 'error.main',
+            padding: (theme) => theme.spacing(2),
             '& .MuiAlert-icon': {
               color: 'error.main',
             },
