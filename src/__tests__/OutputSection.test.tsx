@@ -1,85 +1,89 @@
-import React, { act } from 'react';
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import OutputSection from '../components/OutputSection';
 
 describe('OutputSection', () => {
-  // Test case 1: Initial render state
+  const defaultProps = {
+    value: '',
+  };
+
   test('renders with empty output area and playback controls', () => {
-    render(<OutputSection />);
+    render(<OutputSection {...defaultProps} />);
     
-    // Check if the output label is present
     expect(screen.getByText('Output:')).toBeInTheDocument();
-    
-    // Check if the output field is present and empty
     const outputElement = screen.getByPlaceholderText('Translated message');
     expect(outputElement).toBeInTheDocument();
     expect(outputElement).toHaveValue('');
     expect(outputElement).toHaveAttribute('readOnly');
 
-    // Verify playback controls are present
     const buttons = screen.getAllByRole('button');
-    expect(buttons).toHaveLength(4); // Play, Pause, Stop, and Settings buttons
+    expect(buttons).toHaveLength(4);
   });
 
-  // Test case 2: Morse code output display
-  test('displays morse code output correctly', () => {
-    render(<OutputSection />);
+  test('displays provided value correctly', () => {
+    const props = {
+      value: '... --- ...',
+    };
+    
+    render(<OutputSection {...props} />);
     
     const outputElement = screen.getByPlaceholderText('Translated message');
-    
-    // Since the component is currently not connected to any state management,
-    // we can only verify the presence of the output field
-    // Future implementation should test actual morse code display
-    expect(outputElement).toBeInTheDocument();
+    expect(outputElement).toHaveValue('... --- ...');
   });
 
-  // Test case 3: Text output display based on mode
-  test('displays output based on conversion mode', () => {
-    render(<OutputSection />);
+  test('renders playback controls with correct styling', () => {
+    render(<OutputSection {...defaultProps} />);
     
-    const outputElement = screen.getByPlaceholderText('Translated message');
-    
-    // Currently the component doesn't handle different modes
-    // Future implementation should test mode-specific display
-    expect(outputElement).toBeInTheDocument();
-  });
-
-  // Test case 4: Playback button states
-  test('renders playback controls in correct initial state', () => {
-    render(<OutputSection />);
-    
-    // Verify all control buttons are present
     const buttons = screen.getAllByRole('button');
-    
-    // Verify specific buttons by their visual characteristics
-    // Note: This is a bit fragile and might need updating if styles change
-    const playButton = buttons[0];
-    const pauseButton = buttons[1];
-    const stopButton = buttons[2];
-    const settingsButton = buttons[3];
+    const [playButton, pauseButton, stopButton, settingsButton] = buttons;
 
-    expect(playButton).toBeInTheDocument();
-    expect(pauseButton).toBeInTheDocument();
-    expect(stopButton).toBeInTheDocument();
-    expect(settingsButton).toBeInTheDocument();
-
-    // Future implementation should test button enabled/disabled states
-    // and click handlers once implemented
+    // Test button styling
+    [playButton, pauseButton, stopButton, settingsButton].forEach(button => {
+      expect(button).toHaveStyle({
+        width: '120px',
+        height: '114px',
+        background: '#000000',
+        borderRadius: '30px',
+      });
+    });
   });
 
-  // Test case 5: Output formatting and styling
-  test('applies correct styling to output section', () => {
-    render(<OutputSection />);
+  test('applies correct responsive layout', () => {
+    const { container } = render(<OutputSection {...defaultProps} />);
     
-    const outputElement = screen.getByPlaceholderText('Translated message');
-    
-    // Verify the font family is set correctly
-    expect(outputElement).toHaveStyle({
-      fontFamily: "'JetBrains Mono', monospace"
+    const outputBox = container.firstChild;
+    expect(outputBox).toHaveStyle({
+      background: '#ffffff',
+      border: '2px solid #000000',
+      borderRadius: '30px',
+      padding: '20px',
+      margin: '20px 0',
+      height: '464px',
+      marginTop: '60px',
     });
 
-    // Future implementation should test morse code spacing and formatting
-    // once the actual conversion functionality is implemented
+    const controlsStack = screen.getByRole('group');
+    expect(controlsStack).toHaveStyle({
+      marginTop: '20px',
+    });
+  });
+
+  test('applies correct font styling to output text', () => {
+    render(<OutputSection {...defaultProps} />);
+    
+    const outputElement = screen.getByPlaceholderText('Translated message');
+    expect(outputElement).toHaveStyle({
+      fontSize: '28px',
+      fontFamily: '"JetBrains Mono", monospace',
+    });
+  });
+
+  test('maintains readOnly state', () => {
+    render(<OutputSection value="test" />);
+    
+    const outputElement = screen.getByPlaceholderText('Translated message');
+    expect(outputElement).toHaveAttribute('readOnly');
+    expect(outputElement).not.toHaveAttribute('aria-readonly', 'false');
   });
 });

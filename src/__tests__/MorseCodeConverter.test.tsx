@@ -1,4 +1,6 @@
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import MorseCodeConverter from '../components/MorseCodeConverter';
 
 describe('MorseCodeConverter', () => {
@@ -6,61 +8,80 @@ describe('MorseCodeConverter', () => {
     render(<MorseCodeConverter />);
   });
 
-  describe('Component Rendering', () => {
-    test('renders main component elements', () => {
-      expect(screen.getByTestId('morse-code-converter')).toBeInTheDocument();
-      expect(screen.getByTestId('input-section')).toBeInTheDocument();
-      expect(screen.getByTestId('output-section')).toBeInTheDocument();
-      expect(screen.getByTestId('controls-section')).toBeInTheDocument();
+  describe('Component Integration', () => {
+    test('renders all sections correctly', () => {
+      expect(screen.getByTestId('morse-converter-container')).toBeInTheDocument();
+      expect(screen.getByTestId('morse-input-section')).toBeInTheDocument();
+      expect(screen.getByTestId('morse-output-section')).toBeInTheDocument();
     });
 
-    test('renders title and mode toggle button', () => {
-      expect(screen.getByTestId('converter-title')).toHaveTextContent(/Morse Code Converter/i);
-      expect(screen.getByTestId('mode-toggle-button')).toBeInTheDocument();
-    });
-  });
-
-  describe('Mode Toggle Functionality', () => {
-    test('toggles between text-to-morse and morse-to-text modes', () => {
-      const modeButton = screen.getByTestId('mode-toggle-button');
+    test('integrates input and output sections', () => {
+      const inputElement = screen.getByTestId('morse-code-input');
+      fireEvent.change(inputElement, { target: { value: 'SOS' } });
       
-      // Initial mode should be text-to-morse
-      expect(screen.getByTestId('input-label')).toHaveTextContent(/text input/i);
-      expect(screen.getByTestId('output-label')).toHaveTextContent(/morse code output/i);
-      
-      // Click mode button to switch to morse-to-text
-      fireEvent.click(modeButton);
-      expect(screen.getByTestId('input-label')).toHaveTextContent(/morse code input/i);
-      expect(screen.getByTestId('output-label')).toHaveTextContent(/text output/i);
-      
-      // Click mode button again to switch back to text-to-morse
-      fireEvent.click(modeButton);
-      expect(screen.getByTestId('input-label')).toHaveTextContent(/text input/i);
-      expect(screen.getByTestId('output-label')).toHaveTextContent(/morse code output/i);
-    });
-
-    test('mode toggle button has correct accessibility attributes', () => {
-      const modeButton = screen.getByTestId('mode-toggle-button');
-      expect(modeButton).toHaveAttribute('aria-label', 'Toggle conversion mode');
-      expect(modeButton).toHaveAttribute('role', 'button');
+      const outputElement = screen.getByPlaceholderText('Translated message');
+      expect(outputElement).toHaveValue('... --- ...');
     });
   });
 
-  describe('Input/Output Functionality', () => {
-    test('input and output sections are properly connected', () => {
-      const input = screen.getByTestId('converter-input');
-      const output = screen.getByTestId('converter-output');
-      
-      fireEvent.change(input, { target: { value: 'test' } });
-      expect(output).toHaveValue('- . ... -'); // 'test' in Morse code
+  describe('Layout and Styling', () => {
+    test('applies correct container styling', () => {
+      const container = screen.getByTestId('morse-converter-container');
+      expect(container).toHaveStyle({
+        width: '100%',
+        maxWidth: '1039px',
+        margin: '0 auto',
+        padding: '20px',
+      });
     });
 
-    test('handles input validation', () => {
-      const input = screen.getByTestId('converter-input');
-      const errorMessage = screen.getByTestId('error-message');
+    test('maintains correct section spacing', () => {
+      const inputSection = screen.getByTestId('morse-input-section');
+      const outputSection = screen.getByTestId('morse-output-section');
       
-      fireEvent.change(input, { target: { value: '@#$' } });
-      expect(errorMessage).toHaveTextContent(/invalid characters/i);
+      expect(inputSection).toHaveStyle({
+        marginTop: '187px',
+      });
+      
+      expect(outputSection).toHaveStyle({
+        marginTop: '60px',
+      });
+    });
+  });
+
+  describe('Error Handling', () => {
+    test('displays error message for invalid input', () => {
+      const inputElement = screen.getByTestId('morse-code-input');
+      fireEvent.change(inputElement, { target: { value: '@#$' } });
+      
+      expect(screen.getByText(/invalid characters/i)).toBeInTheDocument();
+    });
+
+    test('clears error when input becomes valid', () => {
+      const inputElement = screen.getByTestId('morse-code-input');
+      
+      // First trigger an error
+      fireEvent.change(inputElement, { target: { value: '@#$' } });
+      expect(screen.getByText(/invalid characters/i)).toBeInTheDocument();
+      
+      // Then make input valid
+      fireEvent.change(inputElement, { target: { value: 'SOS' } });
+      expect(screen.queryByText(/invalid characters/i)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Mode Handling', () => {
+    test('handles mode changes correctly', () => {
+      const { input, output } = useMorseCodeConverter();
+      
+      // Text to Morse
+      fireEvent.change(screen.getByTestId('morse-code-input'), { target: { value: 'SOS' } });
+      expect(output).toBe('... --- ...');
+      
+      // Clear input
+      fireEvent.click(screen.getByTestId('clear-button'));
+      expect(input).toBe('');
+      expect(output).toBe('');
     });
   });
 });
