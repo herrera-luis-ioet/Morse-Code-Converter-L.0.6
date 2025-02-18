@@ -198,7 +198,39 @@
           "details": "Create integration tests covering the complete conversion flow from input to output"
         }
       }
+    },
+    "Task7": {
+      "description": "Fix Missing Public Directory and Index.html",
+      "task_description": "Create missing public directory and index.html file, fix component interfaces, and integrate MorseCodeConverter into App.tsx",
+      "status": "to-do",
+      "details": "Address the missing public/index.html error by creating the necessary files and structure. Update component interfaces to match their usage in parent components. Integrate the MorseCodeConverter component into App.tsx.",
+      "subtasks": {
+        "Task7SubTask1": {
+          "description": "Create public directory and index.html",
+          "status": "in-progress",
+          "micro_agent": "CodeWritingAgent",
+          "details": "Create the public directory and index.html file with proper meta tags, root div, and necessary Create React App template structure. Include proper title, favicon references, and viewport settings."
+        },
+        "Task7SubTask2": {
+          "description": "Update component interfaces",
+          "status": "to-do",
+          "micro_agent": "CodeWritingAgent",
+          "details": "Update props interfaces in InputSection.tsx and OutputSection.tsx to match their usage in the MorseCodeConverter component. Ensure type safety and proper prop documentation."
+        },
+        "Task7SubTask3": {
+          "description": "Integrate MorseCodeConverter into App.tsx",
+          "status": "to-do",
+          "micro_agent": "CodeWritingAgent",
+          "details": "Import and add MorseCodeConverter component to App.tsx. Ensure proper component rendering and prop passing."
+        },
+        "Task7SubTask4": {
+          "description": "Verify application startup",
+          "status": "to-do",
+          "micro_agent": "TestExecutionAgent",
+          "details": "Test the application startup and verify that the index.html is properly loaded and the application renders correctly."
+        }
+      }
     }
   },
-  "next_task_id": 7
+  "next_task_id": 8
 }
