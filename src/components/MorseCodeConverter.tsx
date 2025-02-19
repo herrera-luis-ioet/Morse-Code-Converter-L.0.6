@@ -19,6 +19,7 @@ const MorseCodeConverter: React.FC<MorseCodeConverterProps> = () => {
   const [speed, setSpeed] = useState<number>(20);
   const [pitch, setPitch] = useState<number>(550);
   const [volume, setVolume] = useState<number>(80);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   const {
     input,
@@ -62,6 +63,10 @@ const MorseCodeConverter: React.FC<MorseCodeConverterProps> = () => {
         onSpeedChange={handleSpeedChange}
         onPitchChange={handlePitchChange}
         onVolumeChange={handleVolumeChange}
+        onPlay={() => setIsPlaying(true)}
+        onStop={() => setIsPlaying(false)}
+        onSettingsClick={() => {/* TODO: Implement settings dialog */}}
+        morseCode={output || ''}
         disabled={!input}
       />
       <Divider sx={{ my: 4 }} />
