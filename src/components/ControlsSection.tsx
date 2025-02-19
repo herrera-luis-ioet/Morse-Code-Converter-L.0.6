@@ -12,6 +12,8 @@ interface ControlsSectionProps {
   onPlay: () => void;
   onStop: () => void;
   onSettingsClick: () => void;
+  morseCode: string;
+  disabled: boolean;
 }
 
 const ControlsSection: React.FC<ControlsSectionProps> = ({
@@ -24,6 +26,8 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
   onPlay,
   onStop,
   onSettingsClick,
+  morseCode,
+  disabled,
 }) => {
   return (
     <Box 
@@ -54,6 +58,7 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
           max={100}
           valueLabelDisplay="auto"
           aria-label="Speed"
+          disabled={disabled}
         />
       </Box>
       <Box sx={{ mb: 2 }}>
@@ -74,6 +79,7 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
           max={2000}
           valueLabelDisplay="auto"
           aria-label="Pitch"
+          disabled={disabled}
         />
       </Box>
       <Box sx={{ mb: 2 }}>
@@ -94,6 +100,7 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
           max={100}
           valueLabelDisplay="auto"
           aria-label="Volume"
+          disabled={disabled}
         />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
@@ -101,6 +108,7 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
           onClick={onPlay} 
           data-testid="play-button"
           aria-label="Play"
+          disabled={disabled || !morseCode}
         >
           <PlayArrow />
         </IconButton>
@@ -108,6 +116,7 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
           onClick={onStop} 
           data-testid="stop-button"
           aria-label="Stop"
+          disabled={disabled}
         >
           <Stop />
         </IconButton>
@@ -115,6 +124,7 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
           onClick={onSettingsClick} 
           data-testid="settings-button"
           aria-label="Settings"
+          disabled={disabled}
         >
           <Settings />
         </IconButton>
