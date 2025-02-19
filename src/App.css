@@ -1,0 +1,41 @@
+/* App.css - Component specific styles */
+
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  padding: 2rem;
+  flex: 1;
+}
+
+/* Morse Code Converter specific styles */
+.morse-code-converter {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Control panel styles */
+.control-panel {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Slider controls */
+.slider-control {
+  min-width: 200px;
+}
+
+/* Input/Output areas */
+.text-area {
+  width: 100%;
+  margin: 1rem 0;
+  font-family: 'JetBrains Mono', monospace;
+}
