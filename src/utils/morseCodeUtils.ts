@@ -77,3 +77,24 @@ export const morseToText = (morse: string): string => {
     .map((code) => morseToTextMap[code] ?? code)
     .join("");
 };
+
+// PUBLIC_INTERFACE
+/**
+ * Validates if the input string is valid Morse code
+ * @param input - The string to validate
+ * @returns True if the input is valid Morse code, false otherwise
+ */
+export function isValidMorseCode(input: string): boolean {
+  const validMorseChars = new Set(['.', '-', ' ']);
+  return input.split('').every(char => validMorseChars.has(char));
+}
+
+// PUBLIC_INTERFACE
+/**
+ * Validates if the input string contains only valid characters that can be converted to Morse code
+ * @param input - The string to validate
+ * @returns True if the input contains only valid characters, false otherwise
+ */
+export function isValidText(input: string): boolean {
+  return input.toUpperCase().split('').every(char => char in MORSE_CODE_MAP);
+}
