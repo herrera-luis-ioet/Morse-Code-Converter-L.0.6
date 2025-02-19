@@ -1,5 +1,5 @@
 // Morse code mapping for letters, numbers, and common punctuation
-const MORSE_CODE_MAP = {
+const MORSE_CODE_MAP: Record<string, string> = {
   'A': '.-',
   'B': '-...',
   'C': '-.-.',
