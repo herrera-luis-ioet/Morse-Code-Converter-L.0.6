@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Divider } from '@mui/material';
 import InputSection from './InputSection';
@@ -14,6 +14,10 @@ const Container = styled.div`
 `;
 
 const MorseCodeConverter: React.FC = () => {
+  const [speed, setSpeed] = useState(20);
+  const [pitch, setPitch] = useState(550);
+  const [volume, setVolume] = useState(80);
+
   const {
     input,
     output,
@@ -23,6 +27,18 @@ const MorseCodeConverter: React.FC = () => {
     toggleMode,
     clearInput
   } = useMorseCodeConverter();
+
+  const handleSpeedChange = (value: number) => {
+    setSpeed(value);
+  };
+
+  const handlePitchChange = (value: number) => {
+    setPitch(value);
+  };
+
+  const handleVolumeChange = (value: number) => {
+    setVolume(value);
+  };
 
   return (
     <Container data-testid="morse-converter-container">
@@ -37,7 +53,14 @@ const MorseCodeConverter: React.FC = () => {
         />
       </div>
       <Divider sx={{ my: 4 }} />
-      <ControlsSection />
+      <ControlsSection 
+        speed={speed}
+        pitch={pitch}
+        volume={volume}
+        onSpeedChange={handleSpeedChange}
+        onPitchChange={handlePitchChange}
+        onVolumeChange={handleVolumeChange}
+      />
       <Divider sx={{ my: 4 }} />
       <div data-testid="morse-output-section">
         <OutputSection value={output} />
