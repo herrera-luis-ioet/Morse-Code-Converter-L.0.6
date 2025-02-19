@@ -33,7 +33,7 @@ describe('ControlsSection', () => {
 
   // Test case 1: Initial render state verification
   test('renders with correct initial state', () => {
-    render(<ControlsSection morseCode="..." />);
+    render(<ControlsSection morseCode="..." disabled={false} />);
     
     // Check if all sliders are present with correct initial values
     expect(screen.getByText('speed')).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe('ControlsSection', () => {
 
   // Test case 2: Slider value updates and validation
   test('updates slider values correctly', () => {
-    render(<ControlsSection morseCode="..." />);
+    render(<ControlsSection morseCode="..." disabled={false} />);
     
     // Get all range inputs
     const sliders = screen.getAllByRole('slider');
@@ -73,7 +73,7 @@ describe('ControlsSection', () => {
 
   // Test case 3: Audio control button interactions
   test('handles play and stop button clicks correctly', () => {
-    render(<ControlsSection morseCode="..." />);
+    render(<ControlsSection morseCode="..." disabled={false} />);
     
     const playButton = screen.getByText('Play');
     const stopButton = screen.getByText('Stop');
@@ -102,7 +102,7 @@ describe('ControlsSection', () => {
       updateConfig: mockUpdateConfig,
     });
     
-    render(<ControlsSection morseCode="..." />);
+    render(<ControlsSection morseCode="..." disabled={false} />);
     
     // Check button states when playing
     expect(screen.getByText('Playing...')).toBeInTheDocument();
@@ -122,7 +122,7 @@ describe('ControlsSection', () => {
       updateConfig: mockUpdateConfig,
     });
     
-    render(<ControlsSection morseCode="..." />);
+    render(<ControlsSection morseCode="..." disabled={false} />);
     
     // Check button states when not playing
     expect(screen.getByText('Play')).toBeEnabled();
@@ -131,7 +131,7 @@ describe('ControlsSection', () => {
 
   // Test case 5: Empty morse code handling
   test('disables play button when morse code is empty', () => {
-    render(<ControlsSection morseCode="" />);
+    render(<ControlsSection morseCode="" disabled={false} />);
     
     const playButton = screen.getByText('Play');
     expect(playButton).toBeDisabled();
@@ -139,7 +139,7 @@ describe('ControlsSection', () => {
 
   // Test case 6: Slider range validation
   test('enforces slider value ranges', () => {
-    render(<ControlsSection morseCode="..." />);
+    render(<ControlsSection morseCode="..." disabled={false} />);
     
     const sliders = screen.getAllByRole('slider');
     const [speedSlider, pitchSlider, volumeSlider] = sliders;
@@ -155,5 +155,20 @@ describe('ControlsSection', () => {
     // Check volume slider range
     expect(volumeSlider).toHaveAttribute('min', '0');
     expect(volumeSlider).toHaveAttribute('max', '100');
+  });
+
+  // Test case 7: Disabled state handling
+  test('disables all controls when disabled prop is true', () => {
+    render(<ControlsSection morseCode="..." disabled={true} />);
+    
+    // Check if all sliders are disabled
+    const sliders = screen.getAllByRole('slider');
+    sliders.forEach(slider => {
+      expect(slider).toBeDisabled();
+    });
+    
+    // Check if buttons are disabled
+    expect(screen.getByText('Play')).toBeDisabled();
+    expect(screen.getByText('Stop')).toBeDisabled();
   });
 });
