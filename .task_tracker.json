@@ -282,7 +282,39 @@
           "details": "Verify that the spacing adjustments enhance visual hierarchy without disrupting layout"
         }
       }
+    },
+    "Task10": {
+      "description": "Fix TypeScript Compilation Errors",
+      "task_description": "Resolve TypeScript compilation errors in MorseCodeConverter.tsx and morseCodeUtils.ts",
+      "status": "to-do",
+      "details": "Address three main TypeScript errors:\n1. string | null vs string | undefined type mismatch\n2. Missing required props in ControlsSection\n3. Index signature error in morseCodeUtils.ts",
+      "subtasks": {
+        "Task10SubTask1": {
+          "description": "Fix string | null type error in MorseCodeConverter.tsx",
+          "status": "in-progress",
+          "micro_agent": "CodeWritingAgent",
+          "details": "Update type handling for string | null to string | undefined conversion using proper type narrowing or conversion"
+        },
+        "Task10SubTask2": {
+          "description": "Add required props to ControlsSection component",
+          "status": "to-do",
+          "micro_agent": "CodeWritingAgent",
+          "details": "Implement all required props in MorseCodeConverter.tsx for the ControlsSection component"
+        },
+        "Task10SubTask3": {
+          "description": "Fix index signature error in morseCodeUtils.ts",
+          "status": "to-do",
+          "micro_agent": "CodeWritingAgent",
+          "details": "Add proper type definitions and index signature to MORSE_CODE_MAP"
+        },
+        "Task10SubTask4": {
+          "description": "Verify TypeScript compilation",
+          "status": "to-do",
+          "micro_agent": "TestExecutionAgent",
+          "details": "Run TypeScript compilation to ensure all errors are resolved"
+        }
+      }
     }
   },
-  "next_task_id": 10
+  "next_task_id": 11
 }

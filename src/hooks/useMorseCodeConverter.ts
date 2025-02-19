@@ -4,7 +4,7 @@ import { textToMorse, morseToText, isValidMorseCode, isValidText } from '../util
 interface UseMorseCodeConverterReturn {
   input: string;
   output: string;
-  error: string | null;
+  error: string | undefined;
   mode: 'text-to-morse' | 'morse-to-text';
   setInput: (value: string) => void;
   toggleMode: () => void;
@@ -14,7 +14,7 @@ interface UseMorseCodeConverterReturn {
 export const useMorseCodeConverter = (): UseMorseCodeConverterReturn => {
   const [input, setInput] = useState<string>('');
   const [mode, setMode] = useState<'text-to-morse' | 'morse-to-text'>('text-to-morse');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const validateAndConvert = useCallback((value: string, currentMode: 'text-to-morse' | 'morse-to-text'): string => {
     if (!value) return '';
@@ -24,14 +24,14 @@ export const useMorseCodeConverter = (): UseMorseCodeConverterReturn => {
         setError('Invalid characters detected. Only letters, numbers, and basic punctuation are allowed.');
         return '';
       }
-      setError(null);
+      setError(undefined);
       return textToMorse(value);
     } else {
       if (!isValidMorseCode(value)) {
         setError('Invalid Morse code. Only dots, dashes, and spaces are allowed.');
         return '';
       }
-      setError(null);
+      setError(undefined);
       return morseToText(value);
     }
   }, []);
@@ -44,14 +44,14 @@ export const useMorseCodeConverter = (): UseMorseCodeConverterReturn => {
     setMode(prevMode => {
       const newMode = prevMode === 'text-to-morse' ? 'morse-to-text' : 'text-to-morse';
       setInput('');
-      setError(null);
+      setError(undefined);
       return newMode;
     });
   }, []);
 
   const clearInput = useCallback(() => {
     setInput('');
-    setError(null);
+    setError(undefined);
   }, []);
 
   const output = validateAndConvert(input, mode);
