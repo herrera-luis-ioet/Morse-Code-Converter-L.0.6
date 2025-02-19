@@ -13,10 +13,12 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-const MorseCodeConverter: React.FC = () => {
-  const [speed, setSpeed] = useState(20);
-  const [pitch, setPitch] = useState(550);
-  const [volume, setVolume] = useState(80);
+interface MorseCodeConverterProps {}
+
+const MorseCodeConverter: React.FC<MorseCodeConverterProps> = () => {
+  const [speed, setSpeed] = useState<number>(20);
+  const [pitch, setPitch] = useState<number>(550);
+  const [volume, setVolume] = useState<number>(80);
 
   const {
     input,
@@ -28,15 +30,15 @@ const MorseCodeConverter: React.FC = () => {
     clearInput
   } = useMorseCodeConverter();
 
-  const handleSpeedChange = (value: number) => {
+  const handleSpeedChange = (value: number): void => {
     setSpeed(value);
   };
 
-  const handlePitchChange = (value: number) => {
+  const handlePitchChange = (value: number): void => {
     setPitch(value);
   };
 
-  const handleVolumeChange = (value: number) => {
+  const handleVolumeChange = (value: number): void => {
     setVolume(value);
   };
 
@@ -44,7 +46,7 @@ const MorseCodeConverter: React.FC = () => {
     <Container data-testid="morse-converter-container">
       <div data-testid="morse-input-section">
         <InputSection
-          value={input}
+          value={input || ''}
           onChange={setInput}
           error={error}
           mode={mode}
@@ -60,10 +62,11 @@ const MorseCodeConverter: React.FC = () => {
         onSpeedChange={handleSpeedChange}
         onPitchChange={handlePitchChange}
         onVolumeChange={handleVolumeChange}
+        disabled={!input}
       />
       <Divider sx={{ my: 4 }} />
       <div data-testid="morse-output-section">
-        <OutputSection value={output} />
+        <OutputSection value={output || ''} />
       </div>
     </Container>
   );
